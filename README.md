@@ -8,7 +8,7 @@
 
 ## Summary
 
-~under development~
+_under development_
 
 <!-- This app was written using basic HTML, CSS, and JavaScript (no libraries). The focus of this project was to keep functions smaller and more intentional (be really good at one thing!). This app includes improvements over my previous projects by leveraging ternary operators and for-loops to lean into the 'DRY' concept where possible.
 
