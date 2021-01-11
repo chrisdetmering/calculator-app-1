@@ -1,6 +1,5 @@
 html,
 body {
-  /* padding: 10px; */
   color: grey;
   font-family: ubuntu;
 }
@@ -23,7 +22,7 @@ h2 {
   width: 300px;
   height: 300px;
   border: solid 2px #cdcdcd;
-  border-radius: 3px;
+  border-radius: 5px;
 }
 
 .title {
@@ -40,5 +39,44 @@ h2 {
   font-size: x-large;
 }
 
-/* border: solid 1px #cdcdcd;
-  border-radius: 1px; */
+.btn-frame {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: auto;
+  height: 100%;
+  margin: 1px;
+}
+
+.btn {
+  background: none;
+  border: solid 1px #cdcdcd;
+  width: 24%;
+  margin: 1px;
+  border: solid 2px #cdcdcd;
+  border-radius: 5px;
+  color: grey;
+  font-size: larger;
+  outline: none;
+  transition-duration: 0.3s;
+}
+
+.btn:hover {
+  background-color: #333;
+  color: white;
+}
+
+.numbers {
+  background: ;
+}
+
+.operators {
+  background: #806678;
+  color: white;
+}
+
+.special-clear {
+  background: #806678;
+  color: orange;
+}
