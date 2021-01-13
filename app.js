@@ -1,65 +1,57 @@
 document.addEventListener("click", getBtnValue);
 
 let output = document.getElementById("output");
+let calc;
 
 function getBtnValue(e) {
   let targetBtn = e.target.value;
   targetBtn == "C"
     ? clearCalc()
     : targetBtn == "="
-    ? returnSum()
+    ? rtnEquals(`=`)
     : targetBtn == "+"
-    ? returnSum()
+    ? rtnOperator(`+`)
+    : targetBtn == "-"
+    ? rtnOperator(`-`)
     : targetBtn == "x"
-    ? returnSum()
+    ? rtnOperator(`*`)
     : targetBtn == "÷"
-    ? returnSum()
-    : returnNum();
+    ? rtnOperator(`/`)
+    : rtnInt();
 
   renderScreen(targetBtn);
 }
+function clearCalc() {
+  output.textContent = 0;
+  calc = 0;
+}
+
+function rtnEquals() {
+  let xd = Function(`return ` + calc)();
+  console.log(xd);
+}
+
+function rtnOperator(targetBtn) {
+  calc += parseInt(output.textContent);
+  calc += targetBtn;
+  console.log(calc);
+  //output.textContent = "";
+}
+
+function rtnInt() {
+  //unfinished code
+}
 
 function renderScreen(targetBtn) {
-  console.log(targetBtn);
-  console.log(output.textContent);
   let y = output.textContent + targetBtn;
-  document.getElementById("output").textContent = parseInt(y);
+  output.textContent = parseInt(y);
 }
-
-function clearCalc() {
-  console.log("Special");
-  output.textContent = "0";
-}
-
-function returnSum() {
-  console.log("Operator");
-}
-
-function returnNum() {
-  console.log("Number");
-}
-
-// GOAL: Calculator that can do basic math
-
-// Display at least 10 digits on screen
-// (HTML)
-// Display decimals to at least the thousandth(.001)
-//
-
-// IF "+" is pressed
-// ADD user value to existing value
-// ELSE if user presses "-"
-// SUBTRACT user value from existing value
-// ELSE IF user presses "DIVIDE"
-// DIVIDE user value from existing value
-// ELSE IF user presses "X"
-// MULTIPLY user value with existing value
-// ELSE IF user presses "="
-// resolve equasion
-// ELSE IF user presses "C"
-// reset internal values and screen to '0'
 
 // Example check
 // 5 + 10 * 3 / 2 == 20
 // AND
 // 5 + 10 * 3 = 35 / 2 == 17.5
+
+// exp = '1 + 1'
+// x = Function('return ' + exp)()
+// console.log(x)
