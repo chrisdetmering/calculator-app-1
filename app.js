@@ -1,57 +1,102 @@
-document.addEventListener("click", getBtnValue);
+let calcDisplay;
+let calcValue1;
+let calcValue2;
+let calcOperator;
+let calcResult;
 
-let output = document.getElementById("output");
-let calc;
+function appInit() {
+  let userClick = document.querySelectorAll(".btn");
+  let eachBtn;
+  for (eachBtn = 0; eachBtn < userClick.length; eachBtn++) {
+    userClick[eachBtn].addEventListener("click", evalBtnClick);
+  }
 
-function getBtnValue(e) {
-  let targetBtn = e.target.value;
-  targetBtn == "C"
-    ? clearCalc()
-    : targetBtn == "="
-    ? rtnEquals(`=`)
-    : targetBtn == "+"
-    ? rtnOperator(`+`)
-    : targetBtn == "-"
-    ? rtnOperator(`-`)
-    : targetBtn == "x"
-    ? rtnOperator(`*`)
-    : targetBtn == "÷"
-    ? rtnOperator(`/`)
-    : rtnInt();
+  calcValue1 = 0;
+  calcValue2 = 0;
+  calcOperator = undefined;
+  calcResult = 0;
 
-  renderScreen(targetBtn);
-}
-function clearCalc() {
-  output.textContent = 0;
-  calc = 0;
+  calcDisplay = document.getElementById("output");
+
+  calcDisplay.textContent = 0;
 }
 
-function rtnEquals() {
-  let xd = Function(`return ` + calc)();
-  console.log(xd);
+function evalBtnClick(e) {
+  let clickedBtn = e.target.value;
+
+  // isNaN(clickedBtn) ? operatorAction(clickedBtn) : numberAction(clickedBtn);
+  isNaN(clickedBtn) ? doMaths(clickedBtn) : numberAction(clickedBtn);
 }
 
-function rtnOperator(targetBtn) {
-  calc += parseInt(output.textContent);
-  calc += targetBtn;
-  console.log(calc);
-  //output.textContent = "";
+function operatorAction(clickedBtn) {
+  calcOperator = clickedBtn;
+  clickedBtn == "C"
+    ? appInit()
+    : clickedBtn == "+"
+    ? additionCalc()
+    : clickedBtn == "-"
+    ? subtractionCalc()
+    : clickedBtn == "x"
+    ? multiplicationCalc()
+    : clickedBtn == "÷"
+    ? divisionCalc()
+    : null;
 }
 
-function rtnInt() {
-  //unfinished code
+function numberAction(clickedBtn) {
+  !calcOperator
+    ? ((calcValue1 = calcValue1 + clickedBtn),
+      (calcDisplay.textContent = parseInt(calcValue1)))
+    : ((calcValue2 = calcValue2 + clickedBtn),
+      (calcDisplay.textContent = parseInt(calcValue2)));
 }
 
-function renderScreen(targetBtn) {
-  let y = output.textContent + targetBtn;
-  output.textContent = parseInt(y);
+//////////////////////  TESTING DIFFERENT LOGIC
+
+function doMaths(clickedBtn) {
+  calcResult = parseInt(calcValue1) + clickedBtn + parseInt(calcValue2);
+  console.log(calcResult);
+  calcValue1 = calcResult;
+  calcValue2 = 0;
+  calcDisplay.textContent = calcValue1.toFixed(3);
 }
 
-// Example check
-// 5 + 10 * 3 / 2 == 20
-// AND
-// 5 + 10 * 3 = 35 / 2 == 17.5
+///////////////////// TESTING DIFFERENT LOGIC
 
-// exp = '1 + 1'
-// x = Function('return ' + exp)()
-// console.log(x)
+function additionCalc() {
+  if (calcValue2) {
+    calcResult = parseInt(calcValue1) + parseInt(calcValue2);
+    calcValue1 = calcResult;
+    calcValue2 = 0;
+    calcDisplay.textContent = calcValue1.toFixed(3);
+  }
+}
+
+function subtractionCalc() {
+  if (calcValue2) {
+    calcResult = parseInt(calcValue1) - parseInt(calcValue2);
+    calcValue1 = calcResult;
+    calcValue2 = 0;
+    calcDisplay.textContent = calcValue1.toFixed(3);
+  }
+}
+
+function multiplicationCalc() {
+  if (calcValue2) {
+    calcResult = parseInt(calcValue1) * parseInt(calcValue2);
+    calcValue1 = calcResult;
+    calcValue2 = 0;
+    calcDisplay.textContent = calcValue1.toFixed(3);
+  }
+}
+
+function divisionCalc() {
+  if (calcValue2) {
+    calcResult = parseInt(calcValue1) / parseInt(calcValue2);
+    calcValue1 = calcResult;
+    calcValue2 = 0;
+    calcDisplay.textContent = calcValue1.toFixed(3);
+  }
+}
+
+appInit();
