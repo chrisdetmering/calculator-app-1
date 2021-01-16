@@ -1,6 +1,6 @@
 # A Simple Calculator App
 
-### A simple Calculator that offer basic operation
+### A simple Calculator that offers basic operation
 
 #### Check it out [here](https://btarro.github.io/calculator-app)
 
