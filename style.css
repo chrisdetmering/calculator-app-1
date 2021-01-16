@@ -39,6 +39,12 @@ h2 {
   font-size: x-large;
 }
 
+#output {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .btn-frame {
   display: flex;
   flex-direction: row;
