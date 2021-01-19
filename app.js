@@ -1,99 +1,91 @@
-let calcDisplay;
-let calcValue1;
-let calcValue2;
-let calcOperator;
-let calcResult;
-let lastOperator;
+let display = document.getElementById("output");
+display.textContent = '0';
+let num1 = '';
+let num2 = '';
+let operation = undefined;
 
-calcInit();
+function clearDisplay() { 
+  num1 = ''; 
+  num2 = ''; 
+  display.textContent = '0'; 
+  operation = undefined; 
+}
 
-function calcInit() {
-  const userClick = document.querySelectorAll(".btn");
-  let eachBtn;
-  for (eachBtn = 0; eachBtn < userClick.length; eachBtn++) {
-    userClick[eachBtn].addEventListener("click", evalBtnClick);
+document.querySelectorAll(".btn.numbers").forEach(button => { 
+  button.addEventListener("click", handleNumberClick)
+})
+
+document.querySelectorAll(".btn.operators").forEach(button => { 
+  button.addEventListener("click", handleOperatorClick)
+})
+
+document.querySelector(".btn.equal")
+.addEventListener("click", () => { 
+    if (num1 && num2 && operation) { 
+      const newOperation = null; 
+      calculate(newOperation)
+    }
+})
+
+document.querySelector('.btn.special-clear')
+.addEventListener("click", () => { 
+  clearDisplay(); 
+})
+
+
+function handleOperatorClick(event) { 
+  const operator = event.target.value; 
+  const operations = { 
+    '+':add, 
+    '-':subtract, 
+    'x':multiply, 
+    '÷':divide,
   }
 
-  calcValue1 = 0;
-  calcValue2 = 0;
-  calcOperator = undefined;
-  calcResult = 0;
+  if (!operation) { 
+   operation = operations[operator]; 
+   return; 
+  } 
 
-  calcDisplay = document.getElementById("output");
-
-  calcDisplay.textContent = 0;
+  const newOperation = operations[operator]; 
+  calculate(newOperation)
 }
 
-function evalBtnClick(e) {
-  let clickedBtn = e.target.value;
 
-  isNaN(clickedBtn) ? operatorAction(clickedBtn) : numberAction(clickedBtn);
+function handleNumberClick(event) {
+  if (display.textContent.length === 10) { return; }
+  const number = event.target.value;  
+
+  if (!operation) { 
+    num1 += number; 
+    display.textContent = parseFloat(num1).toLocaleString(); 
+    return; 
+  } 
+    num2 += number; 
+    display.textContent = parseFloat(num2).toLocaleString(); 
 }
 
-function operatorAction(clickedBtn) {
-  lastOperator = calcOperator;
-  calcOperator = clickedBtn;
-  clickedBtn == "C"
-    ? calcInit()
-    : clickedBtn == "+"
-    ? additionCalc()
-    : clickedBtn == "-"
-    ? subtractionCalc()
-    : clickedBtn == "x"
-    ? multiplicationCalc()
-    : clickedBtn == "÷"
-    ? divisionCalc()
-    : operatorAction(lastOperator);
+function calculate(newOperation) { 
+  const result = operation(); 
+    num1 = result; 
+    num2 = ''; 
+    operation = newOperation; 
+    display.textContent = result; 
 }
 
-function numberAction(clickedBtn) {
-  !calcOperator
-    ? ((calcValue1 = calcValue1 + clickedBtn),
-      (calcDisplay.textContent = parseFloat(calcValue1).toLocaleString()))
-    : ((calcValue2 = calcValue2 + clickedBtn),
-      (calcDisplay.textContent = parseFloat(calcValue2).toLocaleString()));
+function add() {
+   return (parseFloat(num1) + parseFloat(num2)).toLocaleString();
 }
 
-function additionCalc() {
-  if (calcValue2) {
-    calcResult = parseFloat(calcValue1) + parseFloat(calcValue2);
-    calcValue1 = calcResult;
-    calcValue2 = 0;
-    calcDisplay.textContent = calcValue1.toLocaleString({
-      maxiumFractionDigits: 3,
-    });
-  }
+function subtract() {
+  return (parseFloat(num1) - parseFloat(num2)).toLocaleString();
 }
 
-function subtractionCalc() {
-  if (calcValue2) {
-    calcResult = parseFloat(calcValue1) - parseFloat(calcValue2);
-    calcValue1 = calcResult;
-    calcValue2 = 0;
-    calcDisplay.textContent = calcValue1.toLocaleString({
-      maxiumFractionDigits: 3,
-    });
-  }
+function multiply() {
+  return (parseFloat(num1) * parseFloat(num2)).toLocaleString();
 }
 
-function multiplicationCalc() {
-  if (calcValue2) {
-    calcResult = parseFloat(calcValue1) * parseFloat(calcValue2);
-    calcValue1 = calcResult;
-    calcValue2 = 0;
-    calcDisplay.textContent = calcValue1.toLocaleString({
-      maxiumFractionDigits: 3,
-    });
-  }
+function divide() {
+  return (parseFloat(num1) / parseFloat(num2)).toLocaleString();
 }
 
-function divisionCalc() {
-  if (calcValue2) {
-    calcResult = parseFloat(calcValue1) / parseFloat(calcValue2);
-    calcValue1 = calcResult;
-    calcValue2 = 0;
-    calcDisplay.textContent = calcValue1.toLocaleString({
-      maxiumFractionDigits: 3,
-    });
-  }
-}
