@@ -1,99 +1,65 @@
-let calcDisplay;
-let calcValue1;
-let calcValue2;
-let calcOperator;
-let calcResult;
-let lastOperator;
+let display = document.querySelector("#output");
+let firstOperand = '';
+let secondOperand = '';
+let operator = null;
 
-calcInit();
 
-function calcInit() {
-  const userClick = document.querySelectorAll(".btn");
-  let eachBtn;
-  for (eachBtn = 0; eachBtn < userClick.length; eachBtn++) {
-    userClick[eachBtn].addEventListener("click", evalBtnClick);
+document.querySelectorAll(".btn.numbers").forEach(numberButton => { 
+  numberButton.addEventListener("click" , () => { 
+      if (display.textContent.length === 10) { return; }
+
+      const number = numberButton.value; 
+
+      if (!operator) { 
+        firstOperand += number; 
+        display.textContent = firstOperand; 
+        return; 
+      }
+       secondOperand += number; 
+       display.textContent = secondOperand; 
+  }) 
+})
+
+document.querySelectorAll(".btn.operators").forEach(operatorButton => { 
+  operatorButton.addEventListener("click", () => { 
+      const currentOperation = operatorButton.value; 
+
+      if (firstOperand) { 
+        operator = currentOperation; 
+      }
+       
+  })
+})
+
+
+document.querySelector(".btn.equal").addEventListener("click", () => { 
+  if (firstOperand && operator && secondOperand) { 
+    const result = calculate(); 
+    firstOperand = `${result}`; 
+    secondOperand = ''; 
+    operator = null; 
+    display.textContent = result; 
+  }
+  
+})
+
+
+function calculate() { 
+  const operations = { 
+    '+':() => parseFloat(firstOperand) + parseFloat(secondOperand), 
+    '-':() => parseFloat(firstOperand) - parseFloat(secondOperand), 
+    'x':() => parseFloat(firstOperand) * parseFloat(secondOperand), 
+    '÷':() => parseFloat(firstOperand) / parseFloat(secondOperand)
   }
 
-  calcValue1 = 0;
-  calcValue2 = 0;
-  calcOperator = undefined;
-  calcResult = 0;
-
-  calcDisplay = document.getElementById("output");
-
-  calcDisplay.textContent = 0;
+  return operations[operator](); 
 }
 
-function evalBtnClick(e) {
-  let clickedBtn = e.target.value;
 
-  isNaN(clickedBtn) ? operatorAction(clickedBtn) : numberAction(clickedBtn);
-}
 
-function operatorAction(clickedBtn) {
-  lastOperator = calcOperator;
-  calcOperator = clickedBtn;
-  clickedBtn == "C"
-    ? calcInit()
-    : clickedBtn == "+"
-    ? additionCalc()
-    : clickedBtn == "-"
-    ? subtractionCalc()
-    : clickedBtn == "x"
-    ? multiplicationCalc()
-    : clickedBtn == "÷"
-    ? divisionCalc()
-    : operatorAction(lastOperator);
-}
 
-function numberAction(clickedBtn) {
-  !calcOperator
-    ? ((calcValue1 = calcValue1 + clickedBtn),
-      (calcDisplay.textContent = parseFloat(calcValue1).toLocaleString()))
-    : ((calcValue2 = calcValue2 + clickedBtn),
-      (calcDisplay.textContent = parseFloat(calcValue2).toLocaleString()));
-}
 
-function additionCalc() {
-  if (calcValue2) {
-    calcResult = parseFloat(calcValue1) + parseFloat(calcValue2);
-    calcValue1 = calcResult;
-    calcValue2 = 0;
-    calcDisplay.textContent = calcValue1.toLocaleString({
-      maxiumFractionDigits: 3,
-    });
-  }
-}
 
-function subtractionCalc() {
-  if (calcValue2) {
-    calcResult = parseFloat(calcValue1) - parseFloat(calcValue2);
-    calcValue1 = calcResult;
-    calcValue2 = 0;
-    calcDisplay.textContent = calcValue1.toLocaleString({
-      maxiumFractionDigits: 3,
-    });
-  }
-}
 
-function multiplicationCalc() {
-  if (calcValue2) {
-    calcResult = parseFloat(calcValue1) * parseFloat(calcValue2);
-    calcValue1 = calcResult;
-    calcValue2 = 0;
-    calcDisplay.textContent = calcValue1.toLocaleString({
-      maxiumFractionDigits: 3,
-    });
-  }
-}
 
-function divisionCalc() {
-  if (calcValue2) {
-    calcResult = parseFloat(calcValue1) / parseFloat(calcValue2);
-    calcValue1 = calcResult;
-    calcValue2 = 0;
-    calcDisplay.textContent = calcValue1.toLocaleString({
-      maxiumFractionDigits: 3,
-    });
-  }
-}
+
